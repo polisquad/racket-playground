@@ -46,7 +46,7 @@
 			accum
 		)
 	)
-	(genList2Helper 0 `())
+	(genList2Helper 0 '())
 )
 (genList2 10)
 
@@ -75,13 +75,32 @@
 			(else (flatHelper (cdr l) (append accum (list (car l)))))
 		)
 	)
-	(flatHelper ls `())
+	(flatHelper ls '())
 )
-(flat `(1 (2 3 (4 5 (6 7))) 8 (9 10)))
+(flat '(1 (2 3 (4 5 (6 7))) 8 (9 10)))
 
 #| 
 	Cartesian product
 |#
 (define (cartesian v1 v2)
-	v1
+
+	;-- Helper
+	(define (cart1 v1 v2 out)
+		(define (cart2 v1 v2 out)
+
+			(if (null? v2)
+
+				out
+				(cart2 v1 (cdr v2) (append out (list (cons (car v1) (car v2)))))
+			)
+		)
+
+		(if (null? v1)
+
+			out
+			(cart1 (cdr v1) v2 (cart2 v1 v2 out))
+		)
+	)
+	(cart1 v1 v2 '())
 )
+(cartesian '(1 2 3) '(#\a #\b #\c))
