@@ -1,87 +1,39 @@
 #lang racket
 
-#| 
-	... Hello world ...
-|#
-(define (helloWorld)
-	(display "hello world!")
-	(newline)
-)
-(helloWorld)
+; Reverses a list
+(define (reverse_ l)
+  (define (loop curr acc)
+  (if (null? curr)
+    acc
+    (loop (cdr curr) (cons (car curr) acc))
+    ))
+  (loop l '()))
 
-#| 
-	Reverse list
-|#
-(define (tsil l)
-	(cond
-		((null? l) l)
-		(else (append
-			(tsil (cdr l))
-			(tsil (list (car l)))
-		))
-	)
-)
 
-#| 
-	Generate a list
-|#
-(define (genList n)
-	(define (genListHelper n)
-		(cond
-			((< n 1) (list 0))
-			(else (append (genListHelper (- n 1)) (list n)))	
-		)
-	)
-	(genListHelper (- n 1))
-)
-(genList 10)
+; Return a list of elements from 0 to n excluded if n > 0 otherwise empty list
+(define (till n)
+  (define (loop x l)
+    (if (< x n)
+      (loop (+ x 1) (append l (list x)))
+      l
+     ))
+  (loop 0 '()))
 
-#| 
-	Generate a list with tail-recursion
-|#
-(define (genList2 n)
-	(define (genList2Helper x accum)
-		(if (< x n)
-			(genList2Helper (+ x 1) (append accum (list x)))
-			accum
-		)
-	)
-	(genList2Helper 0 `())
-)
-(genList2 10)
 
-#| 
-	Another list generator which is tail-recursive
-|#
-(define (genList3 n)
-	(if (= n 1)
-		(list 0)
-		(let
-			((p (- n 1)))
-			(append (genList3 p) (list p))
-		)
-	)
-)
-(genList3 10)
+; Flattens a list
+(define (flatten_ l)
+  (define (loop curr acc)
+    ; To see the evaluation
+    ; (display curr)
+    ; (display acc)
+    (if (null? curr)
+      acc
+    (if (list? (car curr))
+      (loop (cdr curr) (append acc (flatten_ (car curr))))
+      (loop (cdr curr) (append acc (list (car curr)))))))
+  (loop l '()))
 
-#| 
-	Flatten list
-|#
-(define (flat ls)
-	(define (flatHelper l accum)
-		(cond
-			((null? l) accum)
-			((list? (car l)) (flatHelper (cdr l) (append accum (flat (car l)))))
-			(else (flatHelper (cdr l) (append accum (list (car l)))))
-		)
-	)
-	(flatHelper ls `())
-)
-(flat `(1 (2 3 (4 5 (6 7))) 8 (9 10)))
 
-#| 
-	Cartesian product
-|#
-(define (cartesian v1 v2)
-	v1
-)
+(reverse_ (list 1 2 3 4 5))
+(till 10)
+(flatten_ (list 1 2 3 (list 2 (list (list 7 8) 4 5) (list 6 7))))
