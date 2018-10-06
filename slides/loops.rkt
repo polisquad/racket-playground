@@ -62,3 +62,26 @@
 	;-- Bootstrap, with initial values
 	(factTail n 1)
 )
+(factorial2 4)
+
+#| 
+	For each loops
+|#
+(define (printList l)
+	(for-each (lambda (elem)
+		(display elem)
+		(newline)
+	) l)
+)
+(printList '(1 2 3 4 5))
+
+#|
+	For each with vectors
+|#
+#|(define (printVec v)
+	(vector-for-each (lambda (comp)
+		(display comp)
+		(newline)
+	) v)
+)
+(printVec #(1 2 3 4 5))|# ;-- Doesn't seem to be defined
